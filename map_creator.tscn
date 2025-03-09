@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://03p0iovosr7x"]
+
+[ext_resource type="Texture2D" uid="uid://dqdg8uprcealu" path="res://space.png" id="1_by0cc"]
+
+[node name="MapCreator" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.2, 0.2)
+motion_mirroring = Vector2(2000, 0)
+
+[node name="Space" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(1286.33, 635)
+scale = Vector2(2.31481, 2.31481)
+texture = ExtResource("1_by0cc")

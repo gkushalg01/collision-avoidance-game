@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://2d3cwjai8x2e"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_0l1k8"]
+[ext_resource type="Texture2D" uid="uid://dqdg8uprcealu" path="res://space.png" id="1_iqidq"]
+[ext_resource type="Texture2D" uid="uid://dnrfmgle52ch8" path="res://playerGrey_up1.png" id="3_wb1yy"]
+[ext_resource type="Texture2D" uid="uid://gapjadc5ow4l" path="res://playerGrey_up2.png" id="4_5daoh"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_66f7u"]
+radius = 12.0
+height = 32.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4majh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_wb1yy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_5daoh")
+}],
+"loop": true,
+"name": &"ok",
+"speed": 5.0
+}]
+
+[node name="MainGame" type="Node2D"]
+script = ExtResource("1_0l1k8")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+scale = Vector2(1.60497, 1.61318)
+motion_scale = Vector2(0.2, 0.2)
+motion_mirroring = Vector2(1920, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(-9.99997, -19)
+scale = Vector2(1.70102, 1.81129)
+texture = ExtResource("1_iqidq")
+centered = false
+
+[node name="Player" type="Area2D" parent="."]
+position = Vector2(50, 76)
+scale = Vector2(3.88, 3.88)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CapsuleShape2D_66f7u")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
+position = Vector2(3.8147e-06, -7.62939e-06)
+scale = Vector2(0.222222, 0.21355)
+sprite_frames = SubResource("SpriteFrames_4majh")
+animation = &"ok"
