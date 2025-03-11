@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	#if(event.is_action("mouseLeft")):
-	if(event.is_action("mouseLeft")):
+	if(event.is_action("mouseLeft") && event.is_pressed()):
 		var currentPos: = get_global_mouse_position()
 	
 		if(_selectedTileType == TileType.WAYPOINT):
