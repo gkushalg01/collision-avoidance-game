@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://03p0iovosr7x"]
 
-[ext_resource type="Texture2D" uid="uid://bs0lxhhw7iwwx" path="res://space.png" id="1_by0cc"]
+[ext_resource type="Texture2D" uid="uid://ddxff0e1sguxd" path="res://space.png" id="1_by0cc"]
 [ext_resource type="Script" path="res://map_creator.gd" id="1_takbj"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_130r2"]

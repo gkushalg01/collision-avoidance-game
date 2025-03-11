@@ -3,31 +3,27 @@ extends Node2D
 enum TileType { WAYPOINT, PATHPOINT, OBSTACLE }
 var _astar2D: = AStar2D.new()
 var _selectedTileType := TileType.WAYPOINT
-var _tileId := 0
+var _tileId := -1
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	_astar2D.clear() # Replace with function body.
 
 func _input(event: InputEvent) -> void:
 	#if(event.is_action("mouseLeft")):
-	if(event.is_action_pressed("mouseLeft")):
-		var currentPos: = get_local_mouse_position()
+	if(event.is_action("mouseLeft")):
+		var currentPos: = get_global_mouse_position()
 	
 		if(_selectedTileType == TileType.WAYPOINT):
 			createWaypoint(currentPos)
-			print("created wp")
-		elif(_selectedTileType == TileType.OBSTACLE):
-			createObstacle(currentPos)
-			print("created obs")
+		#elif(_selectedTileType == TileType.OBSTACLE):
+			#createObstacle(currentPos)
+			#print("created obs")
 			
 	elif(event.is_action_pressed("mouseRight")):
-		#for x in 
-		pass
 		_astar2D.set_point_disabled(getTileId())
 		
-	queue_redraw()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -54,7 +50,8 @@ func _draw() -> void:
 
 func createWaypoint(currentPos: Vector2) -> void:
 	_astar2D.add_point(getTileId(), currentPos)
+	queue_redraw()
 
 
 func createObstacle(currentPos: Vector2) -> void:
-	_astar2D.add_point(getTileId(), get_local_mouse_position())
+	_astar2D.add_point(getTileId(), currentPos)
