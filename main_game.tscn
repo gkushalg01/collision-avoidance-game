@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://2d3cwjai8x2e"]
 
-[ext_resource type="Script" path="res://game.gd" id="1_0l1k8"]
-[ext_resource type="Texture2D" uid="uid://dqdg8uprcealu" path="res://space.png" id="1_iqidq"]
-[ext_resource type="Texture2D" uid="uid://dnrfmgle52ch8" path="res://playerGrey_up1.png" id="3_wb1yy"]
-[ext_resource type="Texture2D" uid="uid://gapjadc5ow4l" path="res://playerGrey_up2.png" id="4_5daoh"]
+[ext_resource type="Script" path="res://game.gd" id="1_w1dtn"]
+[ext_resource type="Texture2D" uid="uid://bs0lxhhw7iwwx" path="res://space.png" id="2_1pq2p"]
+[ext_resource type="Texture2D" uid="uid://dxfu7hxjp8r3x" path="res://playerGrey_up1.png" id="3_3ghqi"]
+[ext_resource type="Texture2D" uid="uid://b3m7dbsk5uvmw" path="res://playerGrey_up2.png" id="4_y5fu2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_66f7u"]
 radius = 12.0
@@ -13,10 +13,10 @@ height = 32.0
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_wb1yy")
+"texture": ExtResource("3_3ghqi")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_5daoh")
+"texture": ExtResource("4_y5fu2")
 }],
 "loop": true,
 "name": &"ok",
@@ -24,7 +24,7 @@ animations = [{
 }]
 
 [node name="MainGame" type="Node2D"]
-script = ExtResource("1_0l1k8")
+script = ExtResource("1_w1dtn")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -36,7 +36,7 @@ motion_mirroring = Vector2(1920, 0)
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
 position = Vector2(-9.99997, -19)
 scale = Vector2(1.70102, 1.81129)
-texture = ExtResource("1_iqidq")
+texture = ExtResource("2_1pq2p")
 centered = false
 
 [node name="Player" type="Area2D" parent="."]
