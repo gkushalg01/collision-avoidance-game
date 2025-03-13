@@ -94,9 +94,22 @@ text = "Connect Selected"
 icon = SubResource("CanvasTexture_owlkb")
 icon_alignment = 1
 
+[node name="DisconnectSelectedButton" type="Button" parent="."]
+offset_left = 1526.0
+offset_top = 293.0
+offset_right = 1686.0
+offset_bottom = 337.0
+scale = Vector2(2, 2)
+theme_override_colors/font_pressed_color = Color(0.996078, 0, 0, 1)
+theme_override_colors/icon_focus_color = Color(0.984314, 0.160784, 0, 1)
+text = "Disconnect Selected"
+icon = SubResource("CanvasTexture_owlkb")
+icon_alignment = 1
+
 [connection signal="toggled" from="MakePathCheckButton" to="." method="_on_make_path_check_button_toggled"]
 [connection signal="toggled" from="SelectWaypointCheckButton" to="." method="_on_select_waypoint_check_button_toggled"]
 [connection signal="pressed" from="SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="pressed" from="ConnectSelectedButton" to="." method="_on_connect_selected_button_pressed"]
+[connection signal="pressed" from="DisconnectSelectedButton" to="." method="_on_disconnect_selected_button_pressed"]

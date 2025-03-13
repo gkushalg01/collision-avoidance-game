@@ -9,7 +9,7 @@ var _autoConnectMode := true
 var _tileId := -1
 var WAYPOINT_SIZE:= 15
 var PATH_WIDTH:= 20
-var map_save_path:= "res://map.save"
+var MAP_SAVE_PATH:= "res://map.save"
 
 
 func _ready() -> void:
@@ -94,28 +94,37 @@ func _on_reset_button_pressed() -> void:
 func _on_save_button_pressed() -> void:
 	var config := ConfigFile.new()
 	config.set_value("waypoints", "waypoints_astar2d", _astar2D)
-	config.save(map_save_path)
+	config.save(MAP_SAVE_PATH)
 
 
 func _on_load_button_pressed() -> void:
 	var config := ConfigFile.new()
-	config.load(map_save_path)
+	config.load(MAP_SAVE_PATH)
 	_astar2D = config.get_value("waypoints", "waypoints_astar2d", _astar2D)
 	queue_redraw()
 	
 
 func _on_connect_selected_button_pressed() -> void:
-	if(_selectedWaypoints.size() < 1): return
-	var prev_point = _selectedWaypoints[0]
-	for curr_index in range(1, _selectedWaypoints.size()):
-		var curr_point = _selectedWaypoints[curr_index]
-		_astar2D.connect_points(prev_point, curr_point)
-		prev_point = curr_point
-	_selectedWaypoints.clear()
-	queue_redraw()
-		
+	connectSelectedWaypoints()
+
+
+func _on_disconnect_selected_button_pressed() -> void:
+	connectSelectedWaypoints(false)
 
 
 func _on_select_waypoint_check_button_toggled(toggled_on: bool) -> void:
 	_selectedWaypoints.clear()
 	_selectWaypointMode = toggled_on
+
+func connectSelectedWaypoints(connectPoints : bool = true) -> void:
+	if(_selectedWaypoints.size() < 1): return
+	var prev_point = _selectedWaypoints[0]
+	for curr_index in range(1, _selectedWaypoints.size()):
+		var curr_point = _selectedWaypoints[curr_index]
+		if(connectPoints):
+			_astar2D.connect_points(prev_point, curr_point)
+		else:
+			_astar2D.disconnect_points(prev_point, curr_point)
+		prev_point = curr_point
+	_selectedWaypoints.clear()
+	queue_redraw()
