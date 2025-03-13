@@ -93,14 +93,35 @@ func _on_reset_button_pressed() -> void:
 
 func _on_save_button_pressed() -> void:
 	var config := ConfigFile.new()
-	config.set_value("waypoints", "waypoints_astar2d", _astar2D)
+	var nodeToPos := {}
+	var nodeConnections := {}
+	
+	for i in _astar2D.get_point_ids():
+		nodeToPos[i] = _astar2D.get_point_position(i)
+		nodeConnections[i] = _astar2D.get_point_connections(i)
+	config.set_value("waypoints", "nodeToPos", nodeToPos)
+	config.set_value("waypoints", "nodeConnections", nodeConnections)
 	config.save(MAP_SAVE_PATH)
 
 
 func _on_load_button_pressed() -> void:
 	var config := ConfigFile.new()
+	var nodeToPos := {}
+	var nodeConnections := {}
 	config.load(MAP_SAVE_PATH)
-	_astar2D = config.get_value("waypoints", "waypoints_astar2d", _astar2D)
+	nodeToPos = config.get_value("waypoints", "nodeToPos", _astar2D)
+	nodeConnections = config.get_value("waypoints", "nodeConnections", _astar2D)
+	
+	if(nodeToPos.size() < 1): return
+	_astar2D.clear()
+	
+	for node in nodeToPos:
+		_astar2D.add_point(node, nodeToPos[node])
+	for node in nodeConnections:
+		for connection in nodeConnections[node]:
+			_astar2D.connect_points(node, connection)
+			
+	_tileId = nodeToPos.size() - 1
 	queue_redraw()
 	
 
