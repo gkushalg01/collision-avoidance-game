@@ -1,15 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://03p0iovosr7x"]
+[gd_scene load_steps=3 format=3 uid="uid://03p0iovosr7x"]
 
 [ext_resource type="Texture2D" uid="uid://ddxff0e1sguxd" path="res://space.png" id="1_by0cc"]
 [ext_resource type="Script" path="res://map_creator.gd" id="1_takbj"]
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_130r2"]
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_7o0fi"]
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_3bng3"]
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_owlkb"]
 
 [node name="MapCreator" type="Node2D"]
 script = ExtResource("1_takbj")
@@ -21,7 +13,7 @@ motion_scale = Vector2(0.2, 0.2)
 motion_mirroring = Vector2(2000, 0)
 
 [node name="Space" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
-position = Vector2(932, 573)
+position = Vector2(1008, 539)
 scale = Vector2(1.92438, 1.92438)
 texture = ExtResource("1_by0cc")
 
@@ -34,7 +26,6 @@ scale = Vector2(2, 2)
 button_pressed = true
 text = "Make Path
 "
-icon = SubResource("CanvasTexture_130r2")
 
 [node name="SelectWaypointCheckButton" type="CheckButton" parent="."]
 offset_left = 1501.0
@@ -44,7 +35,6 @@ offset_bottom = 121.0
 scale = Vector2(2, 2)
 text = "Select Waypoint(s)
 "
-icon = SubResource("CanvasTexture_130r2")
 
 [node name="SaveButton" type="Button" parent="."]
 offset_left = 1517.0
@@ -55,7 +45,6 @@ scale = Vector2(2, 2)
 theme_override_colors/font_pressed_color = Color(0, 0.737255, 0, 1)
 theme_override_colors/icon_focus_color = Color(0, 0.760784, 0, 1)
 text = "Save (S)"
-icon = SubResource("CanvasTexture_7o0fi")
 icon_alignment = 1
 
 [node name="LoadButton" type="Button" parent="."]
@@ -67,19 +56,18 @@ scale = Vector2(2, 2)
 theme_override_colors/font_pressed_color = Color(0, 0.737255, 0, 1)
 theme_override_colors/icon_focus_color = Color(0, 0.760784, 0, 1)
 text = "Load (L)"
-icon = SubResource("CanvasTexture_3bng3")
 icon_alignment = 1
 
 [node name="BackButton" type="Button" parent="."]
-offset_left = 42.0
-offset_top = 946.0
-offset_right = 127.0
-offset_bottom = 986.0
+offset_left = 1.0
+offset_top = 1004.0
+offset_right = 123.0
+offset_bottom = 1041.0
 scale = Vector2(2, 2)
 theme_override_colors/font_pressed_color = Color(0, 0.737255, 0, 1)
 theme_override_colors/icon_focus_color = Color(0, 0.760784, 0, 1)
-text = "< Back (B)"
-icon = SubResource("CanvasTexture_3bng3")
+theme_override_font_sizes/font_size = 12
+text = "Main Menu"
 icon_alignment = 1
 
 [node name="ResetButton" type="Button" parent="."]
@@ -91,7 +79,6 @@ scale = Vector2(2, 2)
 theme_override_colors/font_pressed_color = Color(0.996078, 0, 0, 1)
 theme_override_colors/icon_focus_color = Color(0.984314, 0.160784, 0, 1)
 text = "Reset (R)"
-icon = SubResource("CanvasTexture_owlkb")
 icon_alignment = 1
 
 [node name="ConnectSelectedButton" type="Button" parent="."]
@@ -103,7 +90,6 @@ scale = Vector2(2, 2)
 theme_override_colors/font_pressed_color = Color(0.996078, 0, 0, 1)
 theme_override_colors/icon_focus_color = Color(0.984314, 0.160784, 0, 1)
 text = "Connect Selected"
-icon = SubResource("CanvasTexture_owlkb")
 icon_alignment = 1
 
 [node name="DisconnectSelectedButton" type="Button" parent="."]
@@ -115,7 +101,6 @@ scale = Vector2(2, 2)
 theme_override_colors/font_pressed_color = Color(0.996078, 0, 0, 1)
 theme_override_colors/icon_focus_color = Color(0.984314, 0.160784, 0, 1)
 text = "Disconnect Selected"
-icon = SubResource("CanvasTexture_owlkb")
 icon_alignment = 1
 
 [connection signal="toggled" from="MakePathCheckButton" to="." method="_on_make_path_check_button_toggled"]

@@ -11,10 +11,14 @@ config_version=5
 [application]
 
 config/name="collision-avoidance-game"
-run/main_scene="res://main_game.tscn"
+run/main_scene="res://main_menu.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/bg_color=Color(0.134892, 0.147591, 0.0907452, 1)
 boot_splash/image="res://bootflash.png"
+
+[autoload]
+
+Global="*res://global.gd"
 
 [display]
 

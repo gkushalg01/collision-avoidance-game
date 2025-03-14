@@ -1,19 +1,15 @@
 extends Node2D
 
 enum TileType { WAYPOINT, PATHPOINT, OBSTACLE }
-var _astar2D: = AStar2D.new()
 var _currentTileType := TileType.WAYPOINT
 var _selectedWaypoints := []
 var _selectWaypointMode := false
 var _autoConnectMode := true
 var _tileId := -1
-var WAYPOINT_SIZE:= 15
-var PATH_WIDTH:= 20
-var MAP_SAVE_PATH:= "res://map.save"
 
 
 func _ready() -> void:
-	_astar2D.clear()
+	Global._astar2D.clear()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -26,14 +22,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	# To-Do Later
 	#elif(event.is_action_pressed("mouseRight")):
-		#_astar2D.set_point_disabled(getTileId())
+		#Global._astar2D.set_point_disabled(getTileId())
 		
 
 func selectPoint(currentPos: Vector2) -> void:
-	var closestPointIndex := _astar2D.get_closest_point(currentPos)
+	var closestPointIndex := Global._astar2D.get_closest_point(currentPos)
 	if(closestPointIndex in _selectedWaypoints):
 		_selectedWaypoints.erase(closestPointIndex)
-	elif(WAYPOINT_SIZE > currentPos.distance_to(_astar2D.get_point_position(closestPointIndex))):
+	elif(Global.WAYPOINT_SIZE > currentPos.distance_to(Global._astar2D.get_point_position(closestPointIndex))):
 		_selectedWaypoints.append(closestPointIndex)
 	queue_redraw()
 
@@ -49,10 +45,10 @@ func getTileId() -> int:
 
 
 func _draw() -> void:
-	var sizeOfMap := _astar2D.get_point_count()
-	for i in _astar2D.get_point_ids():
+	var sizeOfMap := Global._astar2D.get_point_count()
+	for i in Global._astar2D.get_point_ids():
 		drawWaypoint(i)
-		for j in _astar2D.get_point_connections(i):
+		for j in Global._astar2D.get_point_connections(i):
 			drawPath(j, i)
 	
 	for i in _selectedWaypoints:
@@ -60,66 +56,41 @@ func _draw() -> void:
 
 
 func drawPath(left: int, right: int) -> void:
-	if(not _astar2D.has_point(left) or _astar2D.is_point_disabled(left) or _astar2D.is_point_disabled(right)): return
-	if(_astar2D.are_points_connected(left, right)):
-		draw_line(_astar2D.get_point_position(left), _astar2D.get_point_position(right), Color(Color.ALICE_BLUE, .5), PATH_WIDTH)
+	if(not Global._astar2D.has_point(left) or Global._astar2D.is_point_disabled(left) or Global._astar2D.is_point_disabled(right)): return
+	if(Global._astar2D.are_points_connected(left, right)):
+		draw_line(Global._astar2D.get_point_position(left), Global._astar2D.get_point_position(right), Color(Color.ALICE_BLUE, .5), Global.PATH_WIDTH)
 
 
 func drawWaypoint(index: int) -> void:
-	var p_color := Color.ROSY_BROWN if _astar2D.is_point_disabled(index) else Color.CHARTREUSE
-	draw_circle(_astar2D.get_point_position(index), WAYPOINT_SIZE, p_color)
-	draw_string(ThemeDB.fallback_font, _astar2D.get_point_position(index), str(index), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.BLACK)
+	var p_color := Color.ROSY_BROWN if Global._astar2D.is_point_disabled(index) else Color.CHARTREUSE
+	draw_circle(Global._astar2D.get_point_position(index), Global.WAYPOINT_SIZE, p_color)
+	draw_string(ThemeDB.fallback_font, Global._astar2D.get_point_position(index), str(index), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.BLACK)
 
 func drawSelected(index: int) -> void:
-	draw_circle(_astar2D.get_point_position(index), WAYPOINT_SIZE*2, Color(Color.ALICE_BLUE, .5))
+	draw_circle(Global._astar2D.get_point_position(index), Global.WAYPOINT_SIZE*2, Color(Color.ALICE_BLUE, .5))
 
 func createPoint(currentPos: Vector2) -> void:
-	_astar2D.add_point(getTileId(), currentPos)
+	Global._astar2D.add_point(getTileId(), currentPos)
 	if(_currentTileType == TileType.OBSTACLE):
-		_astar2D.set_point_disabled(_tileId)
-	elif(_autoConnectMode && _tileId-1 >= 0 && _astar2D.has_point(_tileId-1)):
-		_astar2D.connect_points(_tileId-1, _tileId)
+		Global._astar2D.set_point_disabled(_tileId)
+	elif(_autoConnectMode && _tileId-1 >= 0 && Global._astar2D.has_point(_tileId-1)):
+		Global._astar2D.connect_points(_tileId-1, _tileId)
 	queue_redraw()
 
 
 func _on_reset_button_pressed() -> void:
-	_astar2D.clear()
+	Global._astar2D.clear()
 	_tileId = -1
 	queue_redraw()
 
 
 func _on_save_button_pressed() -> void:
-	var config := ConfigFile.new()
-	var nodeToPos := {}
-	var nodeConnections := {}
-	
-	for i in _astar2D.get_point_ids():
-		nodeToPos[i] = _astar2D.get_point_position(i)
-		nodeConnections[i] = _astar2D.get_point_connections(i)
-	config.set_value("waypoints", "nodeToPos", nodeToPos)
-	config.set_value("waypoints", "nodeConnections", nodeConnections)
-	config.save(MAP_SAVE_PATH)
+	Global.SaveMap()
 
 
 func _on_load_button_pressed() -> void:
-	if(not FileAccess.file_exists(MAP_SAVE_PATH)): return
-	var config := ConfigFile.new()
-	var nodeToPos := {}
-	var nodeConnections := {}
-	config.load(MAP_SAVE_PATH)
-	nodeToPos = config.get_value("waypoints", "nodeToPos")
-	nodeConnections = config.get_value("waypoints", "nodeConnections")
-	
-	if(nodeToPos.size() < 1): return
-	_astar2D.clear()
-	
-	for node in nodeToPos:
-		_astar2D.add_point(node, nodeToPos[node])
-	for node in nodeConnections:
-		for connection in nodeConnections[node]:
-			_astar2D.connect_points(node, connection)
-			
-	_tileId = nodeToPos.size() - 1
+	Global.LoadMap()
+	_tileId = Global._astar2D.get_point_ids()[Global._astar2D.get_point_count()-1]
 	queue_redraw()
 	
 
@@ -141,9 +112,9 @@ func connectSelectedWaypoints(connectPoints : bool = true) -> void:
 	for curr_index in range(1, _selectedWaypoints.size()):
 		var curr_point = _selectedWaypoints[curr_index]
 		if(connectPoints):
-			_astar2D.connect_points(prev_point, curr_point)
+			Global._astar2D.connect_points(prev_point, curr_point)
 		else:
-			_astar2D.disconnect_points(prev_point, curr_point)
+			Global._astar2D.disconnect_points(prev_point, curr_point)
 		prev_point = curr_point
 	_selectedWaypoints.clear()
 	queue_redraw()
