@@ -37,9 +37,6 @@ func selectPoint(currentPos: Vector2) -> void:
 		_selectedWaypoints.append(closestPointIndex)
 	queue_redraw()
 
-func _process(delta: float) -> void:
-	pass
-
 
 func _on_make_path_check_button_toggled(toggled_on: bool) -> void:
 	if(toggled_on): _currentTileType = TileType.WAYPOINT

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://2d3cwjai8x2e"]
+[gd_scene load_steps=8 format=3 uid="uid://2d3cwjai8x2e"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_w1dtn"]
 [ext_resource type="Texture2D" uid="uid://ddxff0e1sguxd" path="res://space.png" id="2_1pq2p"]
@@ -23,6 +23,8 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CanvasTexture" id="CanvasTexture_4h4if"]
+
 [node name="MainGame" type="Node2D"]
 script = ExtResource("1_w1dtn")
 
@@ -40,7 +42,7 @@ texture = ExtResource("2_1pq2p")
 centered = false
 
 [node name="Player" type="Area2D" parent="."]
-position = Vector2(50, 76)
+position = Vector2(925, 277)
 scale = Vector2(3.88, 3.88)
 metadata/_edit_group_ = true
 
@@ -52,3 +54,25 @@ position = Vector2(3.8147e-06, -7.62939e-06)
 scale = Vector2(0.222222, 0.21355)
 sprite_frames = SubResource("SpriteFrames_4majh")
 animation = &"ok"
+
+[node name="StartGameButton" type="Button" parent="."]
+offset_left = 730.0
+offset_top = 435.0
+offset_right = 1153.0
+offset_bottom = 610.0
+theme_override_font_sizes/font_size = 41
+text = "Start Game"
+icon = SubResource("CanvasTexture_4h4if")
+
+[node name="CreateMapButton" type="Button" parent="."]
+offset_left = 732.0
+offset_top = 660.0
+offset_right = 1155.0
+offset_bottom = 835.0
+theme_override_font_sizes/font_size = 41
+text = "Create Map
+"
+icon = SubResource("CanvasTexture_4h4if")
+
+[connection signal="pressed" from="StartGameButton" to="." method="_on_start_game_button_pressed"]
+[connection signal="pressed" from="CreateMapButton" to="." method="_on_create_map_button_pressed"]
