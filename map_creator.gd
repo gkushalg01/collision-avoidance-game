@@ -90,7 +90,9 @@ func _on_save_button_pressed() -> void:
 
 func _on_load_button_pressed() -> void:
 	Global.LoadMap()
-	_tileId = Global._astar2D.get_point_ids()[Global._astar2D.get_point_count()-1]
+	var allPoints := Global._astar2D.get_point_ids()
+	allPoints.sort()
+	_tileId = allPoints[-1]
 	queue_redraw()
 	
 
