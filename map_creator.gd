@@ -102,12 +102,13 @@ func _on_save_button_pressed() -> void:
 
 
 func _on_load_button_pressed() -> void:
+	if(not FileAccess.file_exists(MAP_SAVE_PATH)): return
 	var config := ConfigFile.new()
 	var nodeToPos := {}
 	var nodeConnections := {}
 	config.load(MAP_SAVE_PATH)
-	nodeToPos = config.get_value("waypoints", "nodeToPos", _astar2D)
-	nodeConnections = config.get_value("waypoints", "nodeConnections", _astar2D)
+	nodeToPos = config.get_value("waypoints", "nodeToPos")
+	nodeConnections = config.get_value("waypoints", "nodeConnections")
 	
 	if(nodeToPos.size() < 1): return
 	_astar2D.clear()
