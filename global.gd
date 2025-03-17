@@ -1,8 +1,8 @@
 extends Node2D
 
 var _astar2D := AStar2D.new()
-var WAYPOINT_SIZE:= 15
-var PATH_WIDTH:= 20
+@export var WAYPOINT_SIZE:= 15
+@export var PATH_WIDTH:= 20
 var MAP_SAVE_PATH:= "res://map.save"
 
 

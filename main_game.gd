@@ -1,8 +1,16 @@
 extends Node2D
 
+var _selectedWaypoints := []
+var _foundPath := []
+
+func _unhandled_input(event: InputEvent) -> void:
+	if(event.is_action("mouseLeft") && event.is_pressed()):
+		var currentPos: = get_global_mouse_position()
+		selectPoint(currentPos)
+
 
 func _ready() -> void:
-	pass
+	Global.LoadMap()
 
 
 func _process(delta: float) -> void:
@@ -20,9 +28,8 @@ func _draw() -> void:
 		for j in Global._astar2D.get_point_connections(i):
 			drawPath(j, i)
 	
-	#for i in _selectedWaypoints:
-		#drawSelected(i)
-
+	drawStartEnd()
+		
 
 func drawPath(left: int, right: int) -> void:
 	if(not Global._astar2D.has_point(left) or Global._astar2D.is_point_disabled(left) or Global._astar2D.is_point_disabled(right)): return
@@ -35,5 +42,32 @@ func drawWaypoint(index: int) -> void:
 	draw_circle(Global._astar2D.get_point_position(index), Global.WAYPOINT_SIZE, p_color)
 	draw_string(ThemeDB.fallback_font, Global._astar2D.get_point_position(index), str(index), HORIZONTAL_ALIGNMENT_CENTER, -1, 16, Color.BLACK)
 
-func drawSelected(index: int) -> void:
-	draw_circle(Global._astar2D.get_point_position(index), Global.WAYPOINT_SIZE*2, Color(Color.ALICE_BLUE, .5))
+
+func drawStartEnd() -> void:
+	if(_selectedWaypoints.size() < 1): return
+	draw_circle(Global._astar2D.get_point_position(_selectedWaypoints[0]), Global.WAYPOINT_SIZE*2, Color(Color.ALICE_BLUE, .5))
+	if(_selectedWaypoints.size() < 2): return
+	draw_circle(Global._astar2D.get_point_position(_selectedWaypoints[-1]), Global.WAYPOINT_SIZE*2, Color(Color.ALICE_BLUE, .5))
+	drawPointPath()
+
+func drawPointPath() -> void:
+	if(_foundPath.size() < 1): return
+	var left = _foundPath[0]
+	for i in range(1, _foundPath.size()):
+		var right = _foundPath[i]
+		draw_line(left, right, Color(Color.CORAL, .4), Global.PATH_WIDTH+2)
+		left = right
+
+
+func selectPoint(currentPos: Vector2) -> void:
+	var closestPointIndex := Global._astar2D.get_closest_point(currentPos)
+	if(closestPointIndex in _selectedWaypoints):
+		_selectedWaypoints.erase(closestPointIndex)
+	elif(Global.WAYPOINT_SIZE > currentPos.distance_to(Global._astar2D.get_point_position(closestPointIndex))):
+		_selectedWaypoints.append(closestPointIndex)
+	queue_redraw()
+
+
+func _on_start_job_button_pressed() -> void:
+	_foundPath = Global._astar2D.get_point_path(_selectedWaypoints[0], _selectedWaypoints[-1])
+	queue_redraw()

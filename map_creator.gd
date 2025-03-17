@@ -5,24 +5,27 @@ var _currentTileType := TileType.WAYPOINT
 var _selectedWaypoints := []
 var _selectWaypointMode := false
 var _autoConnectMode := true
-var _tileId := -1
+var _tileId := 0
 
 
 func _ready() -> void:
 	pass
 
 func _unhandled_input(event: InputEvent) -> void:
+	var currentPos: = get_global_mouse_position()
 	if(event.is_action("mouseLeft") && event.is_pressed()):
-		var currentPos: = get_global_mouse_position()
 		if(_selectWaypointMode):
 			selectPoint(currentPos)
 		elif(_autoConnectMode):
 			createPoint(currentPos)
 		
-	# To-Do Later
-	#elif(event.is_action_pressed("mouseRight")):
-		#Global._astar2D.set_point_disabled(getTileId())
-		
+	#elif(event.is_action_pressed("mouseRight") && event.is_pressed()):
+		#var closestPointIndex := Global._astar2D.get_closest_point(currentPos)
+		#if(Global._astar2D.is_point_disabled(closestPointIndex)):
+			#Global._astar2D.set_point_enabled(Global._astar2D.get_closest_point(currentPos))
+		#else:
+			#Global._astar2D.set_point_disabled(Global._astar2D.get_closest_point(currentPos))
+			
 
 func selectPoint(currentPos: Vector2) -> void:
 	var closestPointIndex := Global._astar2D.get_closest_point(currentPos)
@@ -72,14 +75,14 @@ func createPoint(currentPos: Vector2) -> void:
 	Global._astar2D.add_point(getTileId(), currentPos)
 	if(_currentTileType == TileType.OBSTACLE):
 		Global._astar2D.set_point_disabled(_tileId)
-	elif(_autoConnectMode && _tileId-1 >= 0 && Global._astar2D.has_point(_tileId-1)):
+	elif(_autoConnectMode && _tileId > 1 && Global._astar2D.has_point(_tileId-1)):
 		Global._astar2D.connect_points(_tileId-1, _tileId)
 	queue_redraw()
 
 
 func _on_reset_button_pressed() -> void:
 	Global._astar2D.clear()
-	_tileId = -1
+	_tileId = 0
 	queue_redraw()
 
 
@@ -89,6 +92,7 @@ func _on_save_button_pressed() -> void:
 
 func _on_load_button_pressed() -> void:
 	Global.LoadMap()
+	if(Global._astar2D.get_point_count() < 1): return
 	var allPoints := Global._astar2D.get_point_ids()
 	allPoints.sort()
 	_tileId = allPoints[-1]
