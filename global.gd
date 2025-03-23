@@ -3,7 +3,7 @@ extends Node2D
 var _astar2D := AStar2D.new()
 @export var WAYPOINT_SIZE:= 15
 @export var PATH_WIDTH:= 20
-var MAP_SAVE_PATH:= "res://map.save"
+const MAP_SAVE_PATH:= "res://map.save"
 
 
 func LoadMap() -> void:

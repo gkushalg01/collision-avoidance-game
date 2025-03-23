@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://ciena5dx3ky4g"]
+
+[ext_resource type="Script" path="res://bot.gd" id="1_rjdnw"]
+[ext_resource type="Texture2D" uid="uid://bgflqfdi8a3ok" path="res://tank.png" id="2_rkmt7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_epdhw"]
+size = Vector2(103, 59)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nijh1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rkmt7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Bot" type="Area2D"]
+position = Vector2(196, 87)
+script = ExtResource("1_rjdnw")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(4.5, 0.5)
+shape = SubResource("RectangleShape2D_epdhw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 3.8147e-06)
+rotation = 2.35619
+scale = Vector2(0.226179, 0.226177)
+sprite_frames = SubResource("SpriteFrames_nijh1")

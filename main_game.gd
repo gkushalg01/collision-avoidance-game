@@ -1,5 +1,6 @@
 extends Node2D
 
+@export var bot_scene: PackedScene
 var _selectedWaypoints := []
 var _foundPath := []
 
@@ -69,5 +70,23 @@ func selectPoint(currentPos: Vector2) -> void:
 
 
 func _on_start_job_button_pressed() -> void:
+	findPath()
+
+func findPath() -> void:
+	if(_selectedWaypoints.size() < 1): return
 	_foundPath = Global._astar2D.get_point_path(_selectedWaypoints[0], _selectedWaypoints[-1])
 	queue_redraw()
+
+
+func _on_find_path_button_pressed() -> void:
+	if(_selectedWaypoints.size() < 1): return
+	_foundPath = Global._astar2D.get_point_path(_selectedWaypoints[0], _selectedWaypoints[-1])
+	queue_redraw()
+
+
+func _on_add_bot_button_pressed() -> void:
+	findPath()
+	var bot = bot_scene.instantiate()
+	bot.position = Global._astar2D.get_point_position(_selectedWaypoints[0])
+	bot.startMoving(_foundPath)
+	add_child(bot)
