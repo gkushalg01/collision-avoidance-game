@@ -6,10 +6,14 @@ var _selectedWaypoints := []
 var _selectWaypointMode := false
 var _autoConnectMode := true
 var _tileId := 0
-
+var viewportX = DisplayServer.screen_get_size().x
+var viewportY = DisplayServer.screen_get_size().x
 
 func _ready() -> void:
 	pass
+	
+func _process(delta: float) -> void:
+	queue_redraw()
 
 func _unhandled_input(event: InputEvent) -> void:
 	var currentPos: = get_global_mouse_position()
@@ -47,6 +51,9 @@ func getTileId() -> int:
 
 
 func _draw() -> void:
+	var currentPos := get_global_mouse_position()
+	draw_dashed_line(Vector2(currentPos.x, 0), Vector2(currentPos.x, 2000), Color(Color.AQUA, .5))
+	draw_dashed_line(Vector2(0, currentPos.y), Vector2(2000, currentPos.y), Color(Color.AQUA, .5))
 	var sizeOfMap := Global._astar2D.get_point_count()
 	for i in Global._astar2D.get_point_ids():
 		drawWaypoint(i)
