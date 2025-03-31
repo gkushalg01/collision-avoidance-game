@@ -9,11 +9,11 @@ var _state := State.IDLE
 var _arrivedToNextPoint := false
 var _path := PackedVector2Array()
 var _nextPoint := Vector2()
-var _prevPoint := Vector2()
+var _id := -1
 
 func _ready() -> void:
 	rotation = (_nextPoint - position).normalized().angle()
-
+	
 func _process(delta: float) -> void:
 	if(_state == State.IDLE):
 		return
@@ -43,7 +43,6 @@ func _process(delta: float) -> void:
 			if(_path.is_empty()):
 				changeState(State.IDLE)
 				return
-			_prevPoint = _nextPoint
 			_nextPoint = _path[0]
 
 
@@ -60,7 +59,6 @@ func changeState(newState : State) -> void:
 		if(_path.size() < 2):
 			changeState(State.IDLE)
 			return
-		_prevPoint = _path[0]
 		_nextPoint = _path[1]
 	_state = newState
 	
@@ -68,3 +66,7 @@ func changeState(newState : State) -> void:
 func startMoving(newPath : PackedVector2Array) -> void:
 	_path = newPath
 	changeState(State.BUSY)
+
+
+func assignID(id : int) -> void:
+	_id = id

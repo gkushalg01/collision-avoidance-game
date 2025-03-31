@@ -3,6 +3,7 @@ extends Node2D
 @export var bot_scene: PackedScene
 var _selectedWaypoints := []
 var _foundPath := []
+var _botID := 0
 
 func _unhandled_input(event: InputEvent) -> void:
 	if(event.is_action("mouseLeft") && event.is_pressed()):
@@ -89,4 +90,6 @@ func _on_add_bot_button_pressed() -> void:
 	var bot = bot_scene.instantiate()
 	bot.position = Global._astar2D.get_point_position(_selectedWaypoints[0])
 	bot.startMoving(_foundPath)
+	bot.assignID(_botID)
+	_botID += 1
 	add_child(bot)
